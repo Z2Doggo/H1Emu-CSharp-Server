@@ -1,3 +1,5 @@
 # H1Emu-CSharp-Server
 
-idk what to put here besides that this is a not a fully function server... yet, lol.
+server doesn't work... yet, lol, also runs on dotnet 6.0.
+
+translating the type script of original H1emu server to c#.
