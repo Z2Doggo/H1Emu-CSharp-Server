@@ -1,34 +1,43 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace UdpServer
+namespace UDPServer
 {
     class Program
     {
-        static Task Main()
+        static void Main()
         {
+            IPEndPoint endPoint = new(IPAddress.Parse("127.0.0.1"), 1115);
+
             // Create a new UDP socket
-            Socket socket = new(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            using Socket socket = new(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            // Bind the socket to the endpoint
+            socket.Bind(endPoint);
 
-            // Bind the socket to the localhost and port 1115
-            IPEndPoint localEndPoint = new(IPAddress.Parse("127.0.0.1"), 1115);
-            socket.Bind(localEndPoint);
+            // Create a buffer to store incoming data
+            byte[] buffer = new byte[1024];
 
-            // Start listening for incoming UDP datagrams
+            // Create an EndPoint object to store the client's endpoint information
+            EndPoint clientEndPoint = new IPEndPoint(IPAddress.Any, 0);
+
+            // Start listening for incoming connections
             while (true)
             {
-                // Create a buffer to store the incoming data
-                byte[] buffer = new byte[512];
+                try
+                {
+                    // Receive data from the client
+                    int bytesReceived = socket.ReceiveFrom(buffer, ref clientEndPoint);
 
-                // Create an EndPoint to capture the sender's address
-                EndPoint senderEndPoint = new IPEndPoint(IPAddress.Any, 0);
-
-                // Receive the incoming data
-                int bytesReceived = socket.ReceiveFrom(buffer, ref senderEndPoint);
-
-                // Print the received data
-                Console.WriteLine($"Received {bytesReceived} bytes from {senderEndPoint}: {Encoding.UTF8.GetString(buffer, 0, bytesReceived)}");
+                    // Convert the data to a string and print it to the console
+                    string data = Encoding.ASCII.GetString(buffer, 0, bytesReceived);
+                    Console.WriteLine("Received: {0}", data);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("An error occurred: {0}", ex.Message);
+                }
             }
         }
     }
