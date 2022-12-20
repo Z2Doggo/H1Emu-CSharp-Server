@@ -2,100 +2,100 @@
 {
     public static class ExtensionMethods
     {
-        public static uint ReadUInt24LE(this byte[] buffer, int offset, bool NoAssert = false)
+        public static uint ReadUInt24LE(this byte[] Buffer, int Offset)
         {
-            var value = buffer[offset] + (buffer[offset + 1] << 8) + (buffer[offset + 2] << 16);
-            return (uint)Convert.ToInt32(value);
+            var Value = Buffer[Offset] + (Buffer[Offset + 1] << 8) + (Buffer[Offset + 2] << 16);
+            return (uint)Convert.ToInt32(Value);
         }
 
-        public static void WriteUInt24LE(this byte[] buffer, uint value, int offset, bool NoAssert = false)
+        public static void WriteUInt24LE(this byte[] Buffer, uint Value, int Offset)
         {
-            buffer[offset] = (byte)(value & 0xFF);
-            buffer[offset + 1] = (byte)((value >> 8) & 0xFF);
-            buffer[offset + 2] = (byte)((value >> 16) & 0xFF);
+            Buffer[Offset] = (byte)(Value & 0xFF);
+            Buffer[Offset + 1] = (byte)((Value >> 8) & 0xFF);
+            Buffer[Offset + 2] = (byte)((Value >> 16) & 0xFF);
         }
 
-        public static uint ReadUInt24BE(this byte[] buffer, int offset, bool NoAssert = false)
+        public static uint ReadUInt24BE(this byte[] Buffer, int Offset)
         {
-            var value = (buffer[offset] << 16) + (buffer[offset + 1] << 8) + buffer[offset + 2];
-            return (uint)Convert.ToInt32(value);
+            var Value = (Buffer[Offset] << 16) + (Buffer[Offset + 1] << 8) + Buffer[Offset + 2];
+            return (uint)Convert.ToInt32(Value);
         }
 
-        public static void WriteUInt24BE(this byte[] buffer, uint value, int offset, bool NoAssert = false)
+        public static void WriteUInt24BE(this byte[] Buffer, uint Value, int Offset)
         {
-            buffer[offset] = (byte)((value >> 16) & 0xFF);
-            buffer[offset + 1] = (byte)((value >> 8) & 0xFF);
-            buffer[offset + 2] = (byte)(value & 0xFF);
+            Buffer[Offset] = (byte)((Value >> 16) & 0xFF);
+            Buffer[Offset + 1] = (byte)((Value >> 8) & 0xFF);
+            Buffer[Offset + 2] = (byte)(Value & 0xFF);
         }
 
-        public static string ReadPrefixedStringLE(this byte[] buffer, int offset, string encoding = "utf8", bool NoAssert = false)
+        public static string ReadPrefixedStringLE(this byte[] Buffer, int Offset, string Encoding = "utf8")
         {
-            var length = BitConverter.ToUInt32(buffer, offset);
-            var value = System.Text.Encoding.GetEncoding(encoding).GetString(buffer, offset + 4, offset);
-            return value;
+            BitConverter.ToUInt32(Buffer, Offset);
+            var Value = System.Text.Encoding.GetEncoding(Encoding).GetString(Buffer, Offset + 4, Offset);
+            return Value;
         }
 
-        public static void WritePrefixedStringLE(this byte[] buffer, string String, int offset, string encoding = "utf8")
+        public static void WritePrefixedStringLE(this byte[] Buffer, string String, int Offset, string Encoding = "utf8")
         {
-            var lengthBytes = BitConverter.GetBytes((uint)String.Length);
-            Array.Copy(lengthBytes, 0, buffer, offset, 4);
-            var stringBytes = System.Text.Encoding.GetEncoding(encoding).GetBytes(String);
-            Array.Copy(stringBytes, 0, buffer, offset + 4, encoding.Length);
+            var LengthBytes = BitConverter.GetBytes((uint)String.Length);
+            Array.Copy(LengthBytes, 0, Buffer, Offset, 4);
+            var stringBytes = System.Text.Encoding.GetEncoding(Encoding).GetBytes(String);
+            Array.Copy(stringBytes, 0, Buffer, Offset + 4, Encoding.Length);
         }
 
-        public static string ReadPrefixedStringBE(this byte[] buffer, int offset, string encoding = "utf8", bool NoAssert = false)
+        public static string ReadPrefixedStringBE(this byte[] Buffer, int Offset, string Encoding = "utf8")
         {
-            var length = BitConverter.ToUInt32(buffer, offset);
-            var value = System.Text.Encoding.GetEncoding(encoding).GetString(buffer, offset + 4, offset);
-            return value;
+            BitConverter.ToUInt32(Buffer, Offset);
+            var Value = System.Text.Encoding.GetEncoding(Encoding).GetString(Buffer, Offset + 4, Offset);
+            return Value;
         }
-        public static void WritePrefixedStringBE(this byte[] buffer, string String, int offset, string encoding = "utf8")
+        public static void WritePrefixedStringBE(this byte[] Buffer, string String, int Offset, string Encoding = "utf8")
         {
-            var lengthBytes = BitConverter.GetBytes((uint)String.Length);
-            Array.Reverse(lengthBytes);
-            Array.Copy(lengthBytes, 0, buffer, offset, 4);
-            var stringBytes = System.Text.Encoding.GetEncoding(encoding).GetBytes(String);
-            Array.Copy(stringBytes, 0, buffer, offset + 4, encoding.Length);
+            var LengthBytes = BitConverter.GetBytes((uint)String.Length);
+            Array.Reverse(LengthBytes);
+            Array.Copy(LengthBytes, 0, Buffer, Offset, 4);
+            var stringBytes = System.Text.Encoding.GetEncoding(Encoding).GetBytes(String);
+            Array.Copy(stringBytes, 0, Buffer, Offset + 4, Encoding.Length);
         }
 
-        public static string ReadNullTerminatedString(this byte[] buffer, int offset)
+        public static string ReadNullTerminatedString(this byte[] Buffer, int Offset)
         {
-            var value = "";
-            for (int i = offset; i < buffer.Length; i++)
+            var Value = "";
+            for (int i = Offset; i < Buffer.Length; i++)
             {
-                if (buffer[i] == 0)
+                if (Buffer[i] == 0)
                 {
                     break;
                 }
-                value += (char)buffer[i];
+                Value += (char)Buffer[i];
             }
-            return value;
+            return Value;
         }
 
-        public static void WriteNullTerminatedString(this byte[] buffer, string String, int offset)
+        public static void WriteNullTerminatedString(this byte[] Buffer, string String, int Offset)
         {
             for (int i = 0; i < String.Length; i++)
             {
-                buffer[offset + i] = (byte)String[i];
+                Buffer[Offset + i] = (byte)String[i];
             }
-            buffer[offset + String.Length] = 0;
+            Buffer[Offset + String.Length] = 0;
         }
 
-        public static bool ReadBoolean(this byte[] buffer, int offset, bool NoAssert = false)
+        public static bool ReadBoolean(this byte[] Buffer, int Offset)
         {
-            var value = buffer[offset];
-            return value != 0;
+            var Value = Buffer[Offset];
+            return Value != 0;
         }
 
-        public static void WriteBoolean(this byte[] buffer, bool value, int offset, bool NoAssert = false)
+        public static void WriteBoolean(this byte[] Buffer, bool Value, int Offset)
         {
-            buffer[offset] = value ? (byte)1 : (byte)0;
+            Buffer[Offset] = Value ? (byte)1 : (byte)0;
         }
 
-        public static byte[] ReadBytes(this byte[] buffer, int offset, int length)
+        public static byte[] ReadBytes(this byte[] Buffer, int Offset, int length)
         {
             var dst = new byte[length];
-            Array.Copy(buffer, offset, dst, 0, length);
+            Array.Copy(Buffer, Offset, dst, 0, length);
             return dst;
         }
     }
