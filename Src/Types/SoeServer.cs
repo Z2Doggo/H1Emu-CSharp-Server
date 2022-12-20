@@ -11,7 +11,7 @@
         public const int Two = 2;
     }
 
-    public class DataCache : Dictionary<int, Tuple<byte[], bool>>
+    public class DataCache : Dictionary<int, Tuple<byte[]?, bool>>
     {
     }
 }

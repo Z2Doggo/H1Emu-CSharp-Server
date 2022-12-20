@@ -39,8 +39,8 @@
         {
             var LengthBytes = BitConverter.GetBytes((uint)String.Length);
             Array.Copy(LengthBytes, 0, Buffer, Offset, 4);
-            var stringBytes = System.Text.Encoding.GetEncoding(Encoding).GetBytes(String);
-            Array.Copy(stringBytes, 0, Buffer, Offset + 4, Encoding.Length);
+            var StringBytes = System.Text.Encoding.GetEncoding(Encoding).GetBytes(String);
+            Array.Copy(StringBytes, 0, Buffer, Offset + 4, Encoding.Length);
         }
 
         public static string ReadPrefixedStringBE(this byte[] Buffer, int Offset, string Encoding = "utf8")
@@ -54,8 +54,8 @@
             var LengthBytes = BitConverter.GetBytes((uint)String.Length);
             Array.Reverse(LengthBytes);
             Array.Copy(LengthBytes, 0, Buffer, Offset, 4);
-            var stringBytes = System.Text.Encoding.GetEncoding(Encoding).GetBytes(String);
-            Array.Copy(stringBytes, 0, Buffer, Offset + 4, Encoding.Length);
+            var StringBytes = System.Text.Encoding.GetEncoding(Encoding).GetBytes(String);
+            Array.Copy(StringBytes, 0, Buffer, Offset + 4, Encoding.Length);
         }
 
         public static string ReadNullTerminatedString(this byte[] Buffer, int Offset)
