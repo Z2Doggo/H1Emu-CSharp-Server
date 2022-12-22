@@ -43,8 +43,8 @@ namespace SOEClient
         public string ProtocolName { get; set; } = "unset";
         public ConcurrentDictionary<int, int> UnAckData { get; } = new ConcurrentDictionary<int, int>();
         public List<SoePacket> OutOfOrderPackets { get; set; } = new List<SoePacket>();
-        // public WrappedUint16 NextAck { get; set; } = new WrappedUint16(-1);
-        // public WrappedUint16 LastAck { get; set; } = new WrappedUint16(-1);
+        public WrappedUint16 NextAck { get; set; } = new WrappedUint16(1);
+        public WrappedUint16 LastAck { get; set; } = new WrappedUint16(1);
         // public SOEInputStream InputStream { get; }
         // public SOEOutputStream OutputStream { get; }
         public string SoeClientId { get; }
@@ -63,7 +63,7 @@ namespace SOEClient
             Address = remote.Address.ToString();
             Port = remote.Port;
             CrcSeed = crcSeed;
-            // InputStream = new SOEInputStream(cryptoKey);
+            //InputStream = new SOEInputStream(cryptoKey);
             // OutputStream = new SOEOutputStream(cryptoKey);
             SoeClientId = $"{Address}:{Port}";
         }
