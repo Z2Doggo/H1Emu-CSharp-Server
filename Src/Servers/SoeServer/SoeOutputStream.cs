@@ -1,6 +1,7 @@
 ﻿namespace Servers.SOEOutputStream
 {
     using H1EmuCore;
+    using Servers.SOEInputStream;
     using System.Diagnostics;
 
     public class WrappedUint16
@@ -48,7 +49,7 @@
         }
     }
 
-    public class SOEOutputStream
+    public class SOEOutputStream : EventEmitter
     {
         private bool _UseEncryption = false;
         private int _FragmentSize = 0;
@@ -240,6 +241,11 @@
         public void SetFragmentSize(int value)
         {
             _FragmentSize = value;
+        }
+        public SOEOutputStream(byte[] cryptoKey)
+        {
+            _UseEncryption = cryptoKey != null;
+            _RC4 = _UseEncryption ? new RC4(cryptoKey) : null;
         }
     }
 }

@@ -60,7 +60,7 @@ namespace SOEClient
             Port = remote.Port;
             CrcSeed = crcSeed;
             InputStream = new SOEInputStream(cryptoKey);
-            OutputStream = new SOEOutputStream();
+            OutputStream = new SOEOutputStream(cryptoKey);
             SoeClientId = $"{Address}:{Port}";
         }
         public string[] GetNetworkStats()
