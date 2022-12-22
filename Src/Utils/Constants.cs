@@ -3,7 +3,7 @@
     public static class Constants
     {
         public const uint MAX_TRANSIENT_ID = 16777215;
-        public const uint MAX_UNIT8 = 0xff;
+        public const uint MAX_UINT8 = 0xff;
         public const uint MAX_UINT16 = 0xffff;
         public const uint MAX_UINT32 = 0xffffffff;
         public const uint MAX_HEADER_SIZE = 4;
