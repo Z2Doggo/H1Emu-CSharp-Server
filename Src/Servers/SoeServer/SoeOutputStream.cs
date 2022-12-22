@@ -49,6 +49,37 @@
         }
     }
 
+    public class EventEmitter
+    {
+        private readonly Dictionary<string, List<Action<object[]>>> _eventListeners;
+
+        public EventEmitter()
+        {
+            _eventListeners = new Dictionary<string, List<Action<object[]>>>();
+        }
+
+        public void On(string eventName, Action<object[]> callback)
+        {
+            if (!_eventListeners.ContainsKey(eventName))
+            {
+                _eventListeners[eventName] = new List<Action<object[]>>();
+            }
+
+            _eventListeners[eventName].Add(callback);
+        }
+
+        public void Emit(string eventName, params object[] args)
+        {
+            if (_eventListeners.ContainsKey(eventName))
+            {
+                foreach (var callback in _eventListeners[eventName])
+                {
+                    callback(args);
+                }
+            }
+        }
+    }
+
     public class SOEOutputStream : EventEmitter
     {
         private bool _UseEncryption = false;
