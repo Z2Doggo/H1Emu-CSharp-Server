@@ -17,4 +17,11 @@
     <PackageReference Include="V8.Net" Version="1.1.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Src\Packets\ClientProtocol\ClientProtocol_860\" />
+    <Folder Include="Src\Packets\ClientProtocol\ClientProtocol_1080\" />
+    <Folder Include="Src\Packets\LoginUdp\LoginUdp_9\" />
+    <Folder Include="Src\Packets\LoginUdp\LoginUdp_11\" />
+  </ItemGroup>
+
 </Project>
