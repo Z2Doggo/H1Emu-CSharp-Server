@@ -1,48 +1,4 @@
-﻿namespace TempSolution.EventEmitter
-{
-    using System;
-    using System.Collections.Generic;
-
-    public class EventEmitter
-    {
-        private readonly Dictionary<string, List<Action<object>>> _events = new Dictionary<
-            string,
-            List<Action<object>>
-        >();
-
-        public void On(string eventName, Action<object> callback)
-        {
-            if (!_events.TryGetValue(eventName, out var eventCallbacks))
-            {
-                eventCallbacks = new List<Action<object>>();
-                _events[eventName] = eventCallbacks;
-            }
-
-            eventCallbacks.Add(callback);
-        }
-
-        public void Off(string eventName, Action<object> callback)
-        {
-            if (_events.TryGetValue(eventName, out var eventCallbacks))
-            {
-                eventCallbacks.Remove(callback);
-            }
-        }
-
-        public void Emit(string eventName, object data)
-        {
-            if (_events.TryGetValue(eventName, out var eventCallbacks))
-            {
-                foreach (var callback in eventCallbacks)
-                {
-                    callback(data);
-                }
-            }
-        }
-    }
-}
-
-namespace Servers.SOEOutputStream
+﻿namespace Servers.SOEOutputStream
 {
     using H1EmuCore;
     using System.Diagnostics;

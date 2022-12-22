@@ -1,4 +1,5 @@
-﻿using Soe.LogicalPacket;
+﻿using Servers.SOEOutputStream;
+using Soe.LogicalPacket;
 using SoeServerTypes;
 using System;
 using System.Collections.Concurrent;
@@ -45,8 +46,8 @@ namespace SOEClient
         public List<SoePacket> OutOfOrderPackets { get; set; } = new List<SoePacket>();
         public WrappedUint16 NextAck { get; set; } = new WrappedUint16(1);
         public WrappedUint16 LastAck { get; set; } = new WrappedUint16(1);
-        // public SOEInputStream InputStream { get; }
-        // public SOEOutputStream OutputStream { get; }
+        // TODO public SOEInputStream InputStream { get; }
+        public SOEOutputStream OutputStream { get; }
         public string SoeClientId { get; }
         public Timer LastPingTimer { get; set; }
         public bool IsDeleted { get; set; } = false;
