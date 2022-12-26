@@ -1,16 +1,16 @@
-﻿using Servers.SOEInputStream;
-using Servers.SOEOutputStream;
-using Soe.LogicalPacket;
-using SoeServerTypes;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
-using System.Threading;
-
-namespace SOEClient
+﻿namespace Servers.SOEClient
 {
+    using Servers.SOEInputStream;
+    using Servers.SOEOutputStream;
+    using Soe.LogicalPacket;
+    using SoeServerTypes;
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Text;
+    using System.Threading;
+
     public interface ISOEClientStats
     {
         int TotalPacketSent { get; set; }
@@ -53,6 +53,8 @@ namespace SOEClient
         public ISOEClientStats Stats { get; set; } =
             new SOEClientStats { TotalPacketSent = 0, PacketsOutOfOrder = 0, PacketResend = 0 };
         public int LastAckTime { get; set; } = 0;
+
+
 
         public SOEClient(IPEndPoint remote, int crcSeed, byte[] cryptoKey)
         {

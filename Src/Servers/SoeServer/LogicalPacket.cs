@@ -1,15 +1,16 @@
-﻿// TODO... FIX THIS CODE
-
-namespace Soe.LogicalPacket
+﻿namespace Servers.LogicalPacket
 {
     public class LogicalPacket
     {
-        int? Sequence { get; set; }
-        byte[]? Data { get; set; }
-        bool IsReliable { get; set; }
-        public static void Constructor(byte[] Data, int? Sequence = null)
+        public int? Sequence { get; }
+        public byte[] Data { get; }
+        public bool IsReliable { get; }
+
+        public LogicalPacket(byte[] data, int? sequence = null)
         {
-            bool IsReliable = Data[1] == 9 || Data[1] == 13;
+            Sequence = sequence;
+            Data = data;
+            IsReliable = data[1] == 9 || data[1] == 13;
         }
     }
 }

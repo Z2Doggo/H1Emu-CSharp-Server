@@ -141,14 +141,17 @@ namespace H1EmuCore
         }
     }
 
-    public class Soeprotocol
+    public class SoeProtocol
     {
         public void Free()
         {
         }
 
-        public Soeprotocol(bool use_crc, int crc_seed)
+        // TEMPORARY WORK AROUND FOR NOW...
+        public SoeProtocol()
         {
+            bool use_crc;
+            int crc_seed;
         }
 
         public byte[] Pack(string packet_name, string packet)
