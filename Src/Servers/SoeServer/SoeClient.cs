@@ -2,7 +2,7 @@
 {
     using Servers.SOEInputStream;
     using Servers.SOEOutputStream;
-    using Soe.LogicalPacket;
+    using Servers.LogicalPacket;
     using SoeServerTypes;
     using System;
     using System.Collections.Concurrent;
