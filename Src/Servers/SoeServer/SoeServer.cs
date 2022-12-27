@@ -6,7 +6,6 @@
     using LogicalPacket;
     using SharedTypes;
     using System.Threading;
-    using System.Net.Sockets;
 
     public class SOEServer : EventEmitter
     {
