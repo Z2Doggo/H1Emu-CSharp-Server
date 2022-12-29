@@ -17,7 +17,12 @@
         private readonly int _udpLength = 512;
         private readonly bool _useEncryption = true;
         private readonly Dictionary<string, SOEClient> _clients = new Dictionary<string, SOEClient>();
-        private readonly Thread _workerThread;
+        private SynchronizationContext _syncContext;
+        private void _Connection()
+        {
+            _syncContext = SynchronizationContext.Current;
+        }
+        private Thread _Worker;
         private readonly int _crcSeed = 0;
         public enum CrcLengthOptions // TEMPORARY WORKAROUND...
         {
@@ -43,11 +48,11 @@
             _serverPort = serverPort;
             _cryptoKey = cryptoKey;
             _maxMultiBufferSize = (int)(_udpLength - 4 - _crcLength);
-            _workerThread = new Thread(() =>
+            _Worker = new Thread(() =>
             {
                 // TODO: Replace this with the actual worker thread code
             });
-            _workerThread.Start();
+            _Worker.Start();
 
             Timer timer = new Timer((state) =>
             {
@@ -61,6 +66,18 @@
             foreach (var client in _clients.Values)
             {
                 client.PacketsSentThisSec = 0;
+            }
+        }
+
+        private void _SendPhysicalPacket(SOEClient Client, byte[] Packet)
+        {
+            Client.PacketsSentThisSec++;
+            Client.Stats.TotalPacketSent++;
+            _syncContext.Send(new SendOrPostCallback(OnMessageReceived), null);
+
+            void OnMessageReceived(object state)
+            {
+                // TODO... Handle the message to the thread workers...
             }
         }
     }
