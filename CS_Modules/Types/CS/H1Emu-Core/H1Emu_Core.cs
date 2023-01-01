@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 
 namespace H1EmuCore
 {
-    public static class Core
+    public  class Core
     {
-        public static uint Joaat(string str)
+        public  uint Joaat(string str)
         {
             uint hash = 0;
             for (int i = 0; i < str.Length; i++)
@@ -20,12 +20,12 @@ namespace H1EmuCore
             return hash;
         }
 
-        public static string GenerateRandomGuid()
+        public  string GenerateRandomGuid()
         {
             return Guid.NewGuid().ToString();
         }
 
-        public static float[] Eul2Quat(float[] angle)
+        public  float[] Eul2Quat(float[] angle)
         {
             float c1 = (float)Math.Cos(angle[0] / 2);
             float c2 = (float)Math.Cos(angle[1] / 2);
@@ -42,7 +42,7 @@ namespace H1EmuCore
             return quat;
         }
 
-        public static bool IsPosInRadius(float radius, float[] playerPos, float[] enemyPos)
+        public  bool IsPosInRadius(float radius, float[] playerPos, float[] enemyPos)
         {
             float xDiff = playerPos[0] - enemyPos[0];
             float yDiff = playerPos[1] - enemyPos[1];
@@ -51,7 +51,7 @@ namespace H1EmuCore
             return distance <= radius;
         }
 
-        public static byte[] AppendCrcLegacy(byte[] data, uint crcSeed)
+        public  byte[] AppendCrcLegacy(byte[] data, uint crcSeed)
         {
             uint crc = Crc32Legacy(data, crcSeed);
             byte[] crcData = BitConverter.GetBytes(crc);
@@ -61,7 +61,7 @@ namespace H1EmuCore
             return result;
         }
 
-        public static uint Crc32Legacy(byte[] data, uint crcSeed)
+        public  uint Crc32Legacy(byte[] data, uint crcSeed)
         {
             uint num1 = uint.MaxValue;
             uint num2 = uint.MaxValue;
@@ -133,7 +133,7 @@ namespace H1EmuCore
             return Encrypt(data);
         }
 
-        private static void Swap(ref byte a, ref byte b)
+        private  void Swap(ref byte a, ref byte b)
         {
             byte num = a;
             a = b;
@@ -148,10 +148,9 @@ namespace H1EmuCore
         }
 
         // TEMPORARY WORK AROUND FOR NOW...
-        public SoeProtocol()
+        public SoeProtocol(bool use_crc, int crc_seed)
         {
-            bool use_crc;
-            int crc_seed;
+            // empty...
         }
 
         public byte[] Pack(string packet_name, string packet)
@@ -229,105 +228,103 @@ namespace H1EmuCore
             return Encoding.UTF8.GetBytes(js_object.ToString());
         }
 
-        public class PacketHelper
+        public  byte[] PackData(string packet)
         {
-            public static byte[] PackData(string packet)
-            {
-                return Encoding.UTF8.GetBytes(packet);
-            }
+            return Encoding.UTF8.GetBytes(packet);
+        }
 
-            public static byte[] PackDataFromJS(object jsObject)
-            {
-                string json = JsonConvert.SerializeObject(jsObject);
-                return Encoding.UTF8.GetBytes(json);
-            }
+        public  byte[] PackDataFromJS(object jsObject)
+        {
+            string json = JsonConvert.SerializeObject(jsObject);
+            return Encoding.UTF8.GetBytes(json);
+        }
 
-            public static byte[] PackDataPacket(byte[] data, int sequence)
-            {
-                var result = new List<byte>();
-                result.AddRange(BitConverter.GetBytes(sequence));
-                result.AddRange(data);
-                return result.ToArray();
-            }
+        public  byte[] PackDataPacket(byte[] data, int sequence)
+        {
+            var result = new List<byte>();
+            result.AddRange(BitConverter.GetBytes(sequence));
+            result.AddRange(data);
+            return result.ToArray();
+        }
 
-            public static byte[] PackFragmentData(string packet)
-            {
-                return Encoding.UTF8.GetBytes(packet);
-            }
+        public  byte[] PackFragmentData(string packet)
+        {
+            return Encoding.UTF8.GetBytes(packet);
+        }
 
-            public static byte[] PackFragmentDataFromJS(object jsObject)
-            {
-                string json = JsonConvert.SerializeObject(jsObject);
-                return Encoding.UTF8.GetBytes(json);
-            }
+        public  byte[] PackFragmentDataFromJS(object jsObject)
+        {
+            string json = JsonConvert.SerializeObject(jsObject);
+            return Encoding.UTF8.GetBytes(json);
+        }
 
-            public static byte[] PackFragmentDataPacket(byte[] data, int sequence)
-            {
-                var result = new List<byte>();
-                result.AddRange(BitConverter.GetBytes(sequence));
-                result.AddRange(data);
-                return result.ToArray();
-            }
+        public  byte[] PackFragmentDataPacket(byte[] data, int sequence)
+        {
+            var result = new List<byte>();
+            result.AddRange(BitConverter.GetBytes(sequence));
+            result.AddRange(data);
+            return result.ToArray();
+        }
 
-            public static byte[] PackOutOfOrder(string packet)
-            {
-                return Encoding.UTF8.GetBytes(packet);
-            }
+        public  byte[] PackOutOfOrder(string packet)
+        {
+            return Encoding.UTF8.GetBytes(packet);
+        }
 
-            public static byte[] PackOutOfOrderFromJS(object jsObject)
-            {
-                string json = JsonConvert.SerializeObject(jsObject);
-                return Encoding.UTF8.GetBytes(json);
-            }
+        public  byte[] PackOutOfOrderFromJS(object jsObject)
+        {
+            string json = JsonConvert.SerializeObject(jsObject);
+            return Encoding.UTF8.GetBytes(json);
+        }
 
-            public static byte[] PackOutOfOrderPacket(int sequence)
-            {
-                return BitConverter.GetBytes(sequence);
-            }
+        public  byte[] PackOutOfOrderPacket(int sequence)
+        {
+            return BitConverter.GetBytes(sequence);
+        }
 
-            public static byte[] PackAck(string packet)
-            {
-                return Encoding.UTF8.GetBytes(packet);
-            }
+        public  byte[] PackAck(string packet)
+        {
+            return Encoding.UTF8.GetBytes(packet);
+        }
 
-            public static byte[] PackAckFromJS(object jsObject)
-            {
-                string json = JsonConvert.SerializeObject(jsObject);
-                return Encoding.UTF8.GetBytes(json);
-            }
+        public  byte[] PackAckFromJS(object jsObject)
+        {
+            string json = JsonConvert.SerializeObject(jsObject);
+            return Encoding.UTF8.GetBytes(json);
+        }
 
-            public static byte[] PackAckPacket(int sequence)
-            {
-                return BitConverter.GetBytes(sequence);
-            }
+        public  byte[] PackAckPacket(int sequence)
+        {
+            return BitConverter.GetBytes(sequence);
+        }
 
-            public static string Parse(byte[] data)
-            {
-                return Encoding.UTF8.GetString(data);
-            }
+        public static string Parse(byte[] data)
+        {
+            return Encoding.UTF8.GetString(data);
+        }
 
-            private static int crcSeed = 0;
-            private static bool useCrc = true;
+        private  int crcSeed = 0;
+        private  bool useCrc = true;
 
-            public static int GetCrcSeed()
-            {
-                return crcSeed;
-            }
+        public  int GetCrcSeed()
+        {
+            return crcSeed;
+        }
 
-            public static bool IsUsingCrc()
-            {
-                return useCrc;
-            }
+        public  bool IsUsingCrc()
+        {
+            return useCrc;
+        }
 
-            public static void DisableCrc()
-            {
-                useCrc = false;
-            }
+        public  void DisableCrc()
+        {
+            useCrc = false;
+        }
 
-            public static void EnableCrc()
-            {
-                useCrc = true;
-            }
+        public  void EnableCrc()
+        {
+            useCrc = true;
         }
     }
 }
+    

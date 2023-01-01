@@ -1,8 +1,10 @@
 ﻿namespace Servers.SOEOutputStream
 {
+    using Events;
     using H1EmuCore;
     using Servers.SOEInputStream;
     using System.Diagnostics;
+    using System.Text;
 
     public class WrappedUint16
     {
@@ -49,39 +51,27 @@
         }
     }
 
-    public class EventEmitter
+    public class SOEOutputStream : Events.EventEmitter
     {
-        private readonly Dictionary<string, List<Action<object[]>>> _eventListeners;
+        private Dictionary<string, Action<dynamic, dynamic, dynamic, dynamic>> _eventHandlers1;
+        private Dictionary<string, Action<dynamic, dynamic, dynamic>> _eventHandlers2;
 
-        public EventEmitter()
+        public void On1(string eventName, Action<dynamic, dynamic, dynamic, dynamic> handler)
         {
-            _eventListeners = new Dictionary<string, List<Action<object[]>>>();
+            _eventHandlers1[eventName] = handler;
         }
-
-        public void On(string eventName, Action<object[]> callback)
+        public void On2(string eventName, Action<dynamic, dynamic, dynamic> handler)
         {
-            if (!_eventListeners.ContainsKey(eventName))
-            {
-                _eventListeners[eventName] = new List<Action<object[]>>();
-            }
-
-            _eventListeners[eventName].Add(callback);
+            _eventHandlers2[eventName] = handler;
         }
-
-        public void Emit(string eventName, params object[] args)
+        public void Trigger(string eventName, dynamic arg1, dynamic arg2, dynamic arg3, dynamic arg4)
         {
-            if (_eventListeners.ContainsKey(eventName))
+            if (_eventHandlers1.ContainsKey(eventName))
             {
-                foreach (var callback in _eventListeners[eventName])
-                {
-                    callback(args);
-                }
+                _eventHandlers1[eventName](arg1, arg2, arg3, arg4);
             }
         }
-    }
 
-    public class SOEOutputStream : EventEmitter
-    {
         private bool _UseEncryption = false;
         private int _FragmentSize = 0;
         private WrappedUint16 _Sequence = new WrappedUint16(-1);
@@ -108,7 +98,7 @@
             public bool IsFragment;
         }
 
-        void RemoveFromCache(int sequence)
+        public void RemoveFromCache(int sequence)
         {
             if (_Cache.ContainsKey(sequence))
             {
@@ -202,12 +192,12 @@
         );
         private event DataEventHandler Data = delegate { };
 
-        void ResendData(int sequence)
+        public void ResendData(int sequence)
         {
-            var Emitter = new EventEmitter();
+            var emitter = new Events.EventEmitter();
             if (_Cache.ContainsKey(sequence))
             {
-                Emitter.Emit(
+                emitter.Emit(
                     "dataResend",
                     _Cache[sequence].Data,
                     sequence,
@@ -218,37 +208,6 @@
             {
                 // already deleted from cache so already acknowledged by the client not a real issue
                 Debug.WriteLine($"Cache error, could not resend data for sequence {sequence}! ");
-            }
-        }
-
-        public class EventEmitter
-        {
-            private readonly Dictionary<string, List<Action<object[]>>> _eventListeners;
-
-            public EventEmitter()
-            {
-                _eventListeners = new Dictionary<string, List<Action<object[]>>>();
-            }
-
-            public void On(string eventName, Action<object[]> callback)
-            {
-                if (!_eventListeners.ContainsKey(eventName))
-                {
-                    _eventListeners[eventName] = new List<Action<object[]>>();
-                }
-
-                _eventListeners[eventName].Add(callback);
-            }
-
-            public void Emit(string eventName, params object[] args)
-            {
-                if (_eventListeners.ContainsKey(eventName))
-                {
-                    foreach (var callback in _eventListeners[eventName])
-                    {
-                        callback(args);
-                    }
-                }
             }
         }
 
@@ -273,10 +232,16 @@
         {
             _FragmentSize = value;
         }
+
         public SOEOutputStream(byte[] cryptoKey)
         {
             _UseEncryption = cryptoKey != null;
             _RC4 = _UseEncryption ? new RC4(cryptoKey) : null;
+        }
+
+        public void Ack(dynamic sequence, Dictionary<int, int> unAckData)
+        {
+            Console.WriteLine(Encoding.ASCII.GetBytes("Ack"));
         }
     }
 }

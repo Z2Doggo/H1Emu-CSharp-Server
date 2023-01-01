@@ -3,6 +3,7 @@
     using H1EmuCore;
     using Servers.SOEOutputStream;
     using System.Diagnostics;
+    using System.Text;
     using Utils.Constants;
 
     public class WrappedUint16

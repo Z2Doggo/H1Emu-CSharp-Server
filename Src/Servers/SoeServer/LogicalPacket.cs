@@ -2,13 +2,13 @@
 {
     public class LogicalPacket
     {
-        public int? Sequence { get; }
-        public byte[] Data { get; }
-        public bool IsReliable { get; }
+        public int Sequence { get; set; }
+        public byte[] Data { get; set; }
+        public bool IsReliable { get; set; }
 
         public LogicalPacket(byte[] data, int? sequence = null)
         {
-            Sequence = sequence;
+            Sequence = (int)sequence;
             Data = data;
             IsReliable = data[1] == 9 || data[1] == 13;
         }

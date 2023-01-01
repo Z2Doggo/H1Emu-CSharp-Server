@@ -5,6 +5,7 @@
     using Servers.LogicalPacket;
     using SoeServerTypes;
     using System;
+    using Events;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Net;
@@ -30,7 +31,7 @@
         public int SessionId { get; set; } = 0;
         public string Address { get; }
         public int Port { get; }
-        public int CrcSeed { get; }
+        public int CrcSeed { get; set; }
         public int CrcLength { get; set; } = 2;
         public int ClientUdpLength { get; set; } = 512;
         public int ServerUdpLength { get; set; } = 512;
@@ -40,21 +41,18 @@
             new PacketsQueue { Packets = new List<LogicalPacket>(), CurrentByteLength = 0 };
         public List<LogicalPacket> OutQueue { get; set; } = new List<LogicalPacket>();
         public string ProtocolName { get; set; } = "unset";
-        public ConcurrentDictionary<int, int> UnAckData { get; } =
-            new ConcurrentDictionary<int, int>();
-        public List<SoePacket> OutOfOrderPackets { get; set; } = new List<SoePacket>();
+        public Dictionary<int, int> UnAckData = new Dictionary<int, int>(); 
+        public List<SoePacket> OutOfOrderPackets = new List<SoePacket>();
         public WrappedUint16 NextAck { get; set; } = new WrappedUint16(1);
         public WrappedUint16 LastAck { get; set; } = new WrappedUint16(1);
         public SOEInputStream InputStream { get; }
-        public SOEOutputStream OutputStream { get; }
+        public SOEOutputStream OutputStream { get; set; }
         public string SoeClientId { get; }
         public Timer LastPingTimer { get; set; }
         public bool IsDeleted { get; set; } = false;
         public ISOEClientStats Stats { get; set; } =
             new SOEClientStats { TotalPacketSent = 0, PacketsOutOfOrder = 0, PacketResend = 0 };
         public int LastAckTime { get; set; } = 0;
-
-
 
         public SOEClient(IPEndPoint remote, int crcSeed, byte[] cryptoKey)
         {
@@ -84,6 +82,16 @@
     {
         private ushort _value;
         public WrappedUint16(ushort value)
+        {
+            _value = value;
+        }
+
+        public ushort Get()
+        {
+            return _value;
+        }
+
+        public void Set(ushort value)
         {
             _value = value;
         }
