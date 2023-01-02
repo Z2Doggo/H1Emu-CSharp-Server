@@ -3,6 +3,9 @@
     using Protocols.H1Emu;
     using H1EmuClient;
     using System.Threading;
+    using System.Net.Sockets;
+    using System.Net;
+    using System.Text;
 
     abstract class H1emuServer
     {
@@ -30,15 +33,35 @@
         public void UdpServerWorker(int serverPort, bool disableAntiDdos)
         {
             _ServerPort = serverPort;
-            _DisableAntiDdos = disableAntiDdos;
-            _Thread = new Thread(Run);
+            _DisableAntiDdos = disableAntiDdos; 
+            _Thread = new Thread(() => Run(serverPort));
             _Thread.Start();
         }
 
-        private void Run()
+        public void Run(int port)
         {
-            // code to run the UDP server goes here
-            Console.WriteLine("Running UDP server on port " + _ServerPort + " with anti-DDOS " + (_DisableAntiDdos ? "disabled" : "enabled"));
+            UdpClient listener = new UdpClient(port);
+            IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, port);
+
+            try
+            {
+                while (true)
+                {
+                    Console.WriteLine("Waiting for broadcast");
+                    byte[] bytes = listener.Receive(ref groupEP);
+
+                    Console.WriteLine($"Received broadcast from {groupEP} :");
+                    Console.WriteLine($" {Encoding.ASCII.GetString(bytes, 0, bytes.Length)}");
+                }
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                listener.Close();
+            }
         }
     }
 }
