@@ -1,5 +1,6 @@
 ﻿namespace Protocols.H1Emu
 {
+    using Data.DataSchema;
     using System.Collections.Generic;
 
     public class H1EmuProtocol
@@ -172,7 +173,7 @@
                         },
                     },
                 };
-            }
-        }
-    }
-}
+            };
+        };
+    };
+};

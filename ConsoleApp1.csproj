@@ -22,10 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Src\Packets\ClientProtocol\ClientProtocol_860\" />
-    <Folder Include="Src\Packets\ClientProtocol\ClientProtocol_1080\" />
-    <Folder Include="Src\Packets\LoginUdp\LoginUdp_9\" />
-    <Folder Include="Src\Packets\LoginUdp\LoginUdp_11\" />
+    <Folder Include="src\packets\ClientProtocol\ClientProtocol_860\" />
+    <Folder Include="src\packets\ClientProtocol\ClientProtocol_1080\" />
+    <Folder Include="src\packets\LoginUdp\LoginUdp_9\" />
+    <Folder Include="src\packets\LoginUdp\LoginUdp_11\" />
   </ItemGroup>
 
 </Project>
