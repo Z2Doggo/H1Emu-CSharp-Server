@@ -33,7 +33,7 @@
         public void UdpServerWorker(int serverPort, bool disableAntiDdos)
         {
             _ServerPort = serverPort;
-            _DisableAntiDdos = disableAntiDdos; 
+            _DisableAntiDdos = disableAntiDdos;
             _Thread = new Thread(() => Run(serverPort));
             _Thread.Start();
         }

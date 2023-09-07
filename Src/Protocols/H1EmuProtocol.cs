@@ -1,15 +1,14 @@
-﻿namespace Protocols.H1Emu
-{
-    using Data.DataSchema;
-    using System.Collections.Generic;
+﻿using Data.DataSchema;
 
+namespace Protocols.H1Emu
+{
     public class H1EmuProtocol
     {
         public class Field
         {
-            public string name;
-            public string type;
-            public object defaultValue;
+            public string? name;
+            public dynamic? type;
+            public object? defaultValue;
         }
 
         public class Packet
@@ -42,37 +41,35 @@
             {
                 public static readonly Packet[] packets = new Packet[]
                 {
-                    new Packet
-                    {
+                    new() {
                         name = "SessionRequest",
                         id = PacketTypes.SessionRequest,
-                        fields = new List<Field>
+                        fields =
                         {
                             new Field { name = "serverId", type = "uint32", defaultValue = 0 },
                             new Field { name = "h1emuVersion", type = "string", defaultValue = "" },
                         },
                     },
-                    new Packet
-                    {
+                    new() {
                         name = "SessionReply",
                         id = PacketTypes.SessionReply,
-                        fields = new List<Field>
+                        fields =
                         {
-                            new Field { name = "status", type = "uint8", defaultValue = 0 },
+                            new() { name = "status", type = "uint8", defaultValue = 0 },
                         },
                     },
-                    new Packet
+                    new()
                     {
                         name = "Ping",
                         id = PacketTypes.Ping,
-                        fields = new List<Field>(),
+                        fields = {},
                     },
-                    new Packet { name = "Ack", id = PacketTypes.Ack, fields = new List<Field>(), },
-                    new Packet
+                    new() { name = "Ack", id = PacketTypes.Ack, fields = new List<Field>(), },
+                    new()
                     {
                         name = "CharacterCreateRequest",
                         id = PacketTypes.CharacterCreateRequest,
-                        fields = new List<Field>
+                        fields =
                         {
                             new Field { name = "reqId", type = "uint32", defaultValue = 0 },
                             new Field
@@ -83,21 +80,21 @@
                             },
                         },
                     },
-                    new Packet
+                    new()
                     {
                         name = "CharacterCreateReply",
                         id = PacketTypes.CharacterCreateReply,
-                        fields = new List<Field>
+                        fields =
                         {
                             new Field { name = "reqId", type = "uint32", defaultValue = 0 },
                             new Field { name = "status", type = "boolean", defaultValue = 0 },
                         },
                     },
-                    new Packet
+                    new()
                     {
                         name = "CharacterDeleteRequest",
                         id = PacketTypes.CharacterDeleteRequest,
-                        fields = new List<Field>
+                        fields =
                         {
                             new Field { name = "reqId", type = "uint32", defaultValue = 0 },
                             new Field
@@ -108,50 +105,50 @@
                             },
                         },
                     },
-                    new Packet
+                    new()
                     {
                         name = "CharacterDeleteReply",
                         id = PacketTypes.CharacterDeleteReply,
-                        fields = new List<Field>
+                        fields =
                         {
                             new Field { name = "reqId", type = "uint32", defaultValue = 0 },
                             new Field { name = "status", type = "boolean", defaultValue = 0 },
                         },
                     },
-                    new Packet
+                    new()
                     {
                         name = "UpdateZonePopulation",
                         id = PacketTypes.UpdateZonePopulation,
-                        fields = new List<Field>
+                        fields =
                         {
                             new Field { name = "population", type = "uint8", defaultValue = 0 },
                         },
                     },
-                    new Packet
+                    new()
                     {
                         name = "ZonePingRequest",
                         id = PacketTypes.ZonePingRequest,
-                        fields = new List<Field>
+                        fields =
                         {
                             new Field { name = "reqId", type = "uint32", defaultValue = 0 },
                             new Field { name = "address", type = "string", defaultValue = 0 },
                         },
                     },
-                    new Packet
+                    new()
                     {
                         name = "ZonePingReply",
                         id = PacketTypes.ZonePingReply,
-                        fields = new List<Field>
+                        fields =
                         {
                             new Field { name = "reqId", type = "uint32", defaultValue = 0 },
                             new Field { name = "status", type = "boolean", defaultValue = 0 },
                         },
                     },
-                    new Packet
+                    new()
                     {
                         name = "CharacterExistRequest",
                         id = PacketTypes.CharacterExistRequest,
-                        fields = new List<Field>
+                        fields =
                         {
                             new Field { name = "reqId", type = "uint32", defaultValue = 0 },
                             new Field
@@ -162,11 +159,10 @@
                             },
                         },
                     },
-                    new Packet
-                    {
+                    new() {
                         name = "CharacterExistReply",
                         id = PacketTypes.CharacterExistReply,
-                        fields = new List<Field>
+                        fields =
                         {
                             new Field { name = "reqId", type = "uint32", defaultValue = 0 },
                             new Field { name = "status", type = "boolean", defaultValue = 0 },

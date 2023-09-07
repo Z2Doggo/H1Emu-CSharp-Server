@@ -41,7 +41,7 @@
             new PacketsQueue { Packets = new List<LogicalPacket>(), CurrentByteLength = 0 };
         public List<LogicalPacket> OutQueue { get; set; } = new List<LogicalPacket>();
         public string ProtocolName { get; set; } = "unset";
-        public Dictionary<int, int> UnAckData = new Dictionary<int, int>(); 
+        public Dictionary<int, int> UnAckData = new Dictionary<int, int>();
         public List<SoePacket> OutOfOrderPackets = new List<SoePacket>();
         public WrappedUint16 NextAck { get; set; } = new WrappedUint16(1);
         public WrappedUint16 LastAck { get; set; } = new WrappedUint16(1);

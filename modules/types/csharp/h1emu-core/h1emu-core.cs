@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 
 namespace H1EmuCore
 {
-    public  class Core
+    public class Core
     {
-        public  uint Joaat(string str)
+        public static uint Joaat(string str)
         {
             uint hash = 0;
             for (int i = 0; i < str.Length; i++)
@@ -20,12 +20,12 @@ namespace H1EmuCore
             return hash;
         }
 
-        public  string GenerateRandomGuid()
+        public static string GenerateRandomGuid()
         {
             return Guid.NewGuid().ToString();
         }
 
-        public  float[] Eul2Quat(float[] angle)
+        public static float[] Eul2Quat(float[] angle)
         {
             float c1 = (float)Math.Cos(angle[0] / 2);
             float c2 = (float)Math.Cos(angle[1] / 2);
@@ -42,7 +42,7 @@ namespace H1EmuCore
             return quat;
         }
 
-        public  bool IsPosInRadius(float radius, float[] playerPos, float[] enemyPos)
+        public static bool IsPosInRadius(float radius, float[] playerPos, float[] enemyPos)
         {
             float xDiff = playerPos[0] - enemyPos[0];
             float yDiff = playerPos[1] - enemyPos[1];
@@ -51,7 +51,7 @@ namespace H1EmuCore
             return distance <= radius;
         }
 
-        public  byte[] AppendCrcLegacy(byte[] data, uint crcSeed)
+        public byte[] AppendCrcLegacy(byte[] data, uint crcSeed)
         {
             uint crc = Crc32Legacy(data, crcSeed);
             byte[] crcData = BitConverter.GetBytes(crc);
@@ -61,7 +61,7 @@ namespace H1EmuCore
             return result;
         }
 
-        public  uint Crc32Legacy(byte[] data, uint crcSeed)
+        public static uint Crc32Legacy(byte[] data, uint crcSeed)
         {
             uint num1 = uint.MaxValue;
             uint num2 = uint.MaxValue;
@@ -133,7 +133,7 @@ namespace H1EmuCore
             return Encrypt(data);
         }
 
-        private  void Swap(ref byte a, ref byte b)
+        private void Swap(ref byte a, ref byte b)
         {
             byte num = a;
             a = b;
@@ -228,18 +228,18 @@ namespace H1EmuCore
             return Encoding.UTF8.GetBytes(js_object.ToString());
         }
 
-        public  byte[] PackData(string packet)
+        public byte[] PackData(string packet)
         {
             return Encoding.UTF8.GetBytes(packet);
         }
 
-        public  byte[] PackDataFromJS(object jsObject)
+        public byte[] PackDataFromJS(object jsObject)
         {
             string json = JsonConvert.SerializeObject(jsObject);
             return Encoding.UTF8.GetBytes(json);
         }
 
-        public  byte[] PackDataPacket(byte[] data, int sequence)
+        public byte[] PackDataPacket(byte[] data, int sequence)
         {
             var result = new List<byte>();
             result.AddRange(BitConverter.GetBytes(sequence));
@@ -247,18 +247,18 @@ namespace H1EmuCore
             return result.ToArray();
         }
 
-        public  byte[] PackFragmentData(string packet)
+        public byte[] PackFragmentData(string packet)
         {
             return Encoding.UTF8.GetBytes(packet);
         }
 
-        public  byte[] PackFragmentDataFromJS(object jsObject)
+        public byte[] PackFragmentDataFromJS(object jsObject)
         {
             string json = JsonConvert.SerializeObject(jsObject);
             return Encoding.UTF8.GetBytes(json);
         }
 
-        public  byte[] PackFragmentDataPacket(byte[] data, int sequence)
+        public byte[] PackFragmentDataPacket(byte[] data, int sequence)
         {
             var result = new List<byte>();
             result.AddRange(BitConverter.GetBytes(sequence));
@@ -266,34 +266,34 @@ namespace H1EmuCore
             return result.ToArray();
         }
 
-        public  byte[] PackOutOfOrder(string packet)
+        public byte[] PackOutOfOrder(string packet)
         {
             return Encoding.UTF8.GetBytes(packet);
         }
 
-        public  byte[] PackOutOfOrderFromJS(object jsObject)
+        public byte[] PackOutOfOrderFromJS(object jsObject)
         {
             string json = JsonConvert.SerializeObject(jsObject);
             return Encoding.UTF8.GetBytes(json);
         }
 
-        public  byte[] PackOutOfOrderPacket(int sequence)
+        public byte[] PackOutOfOrderPacket(int sequence)
         {
             return BitConverter.GetBytes(sequence);
         }
 
-        public  byte[] PackAck(string packet)
+        public byte[] PackAck(string packet)
         {
             return Encoding.UTF8.GetBytes(packet);
         }
 
-        public  byte[] PackAckFromJS(object jsObject)
+        public byte[] PackAckFromJS(object jsObject)
         {
             string json = JsonConvert.SerializeObject(jsObject);
             return Encoding.UTF8.GetBytes(json);
         }
 
-        public  byte[] PackAckPacket(int sequence)
+        public byte[] PackAckPacket(int sequence)
         {
             return BitConverter.GetBytes(sequence);
         }
@@ -303,28 +303,28 @@ namespace H1EmuCore
             return Encoding.UTF8.GetString(data);
         }
 
-        private  int crcSeed = 0;
-        private  bool useCrc = true;
+        private int crcSeed = 0;
+        private bool useCrc = true;
 
-        public  int GetCrcSeed()
+        public int GetCrcSeed()
         {
             return crcSeed;
         }
 
-        public  bool IsUsingCrc()
+        public bool IsUsingCrc()
         {
             return useCrc;
         }
 
-        public  void DisableCrc()
+        public void DisableCrc()
         {
             useCrc = false;
         }
 
-        public  void EnableCrc()
+        public void EnableCrc()
         {
             useCrc = true;
         }
     }
 }
-    
+

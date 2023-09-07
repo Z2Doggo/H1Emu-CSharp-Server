@@ -83,7 +83,7 @@
     }
     public class Fragment
     {
-        public byte[] Payload { get; set; }
+        public byte[]? Payload { get; set; }
         public bool IsFragment { get; set; }
     }
 

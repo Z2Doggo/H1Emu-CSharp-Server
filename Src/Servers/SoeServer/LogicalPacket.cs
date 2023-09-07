@@ -6,9 +6,9 @@
         public byte[] Data { get; set; }
         public bool IsReliable { get; set; }
 
-        public LogicalPacket(byte[] data, int? sequence = null)
+        public LogicalPacket(byte[] data, int sequence)
         {
-            Sequence = (int)sequence;
+            Sequence = sequence;
             Data = data;
             IsReliable = data[1] == 9 || data[1] == 13;
         }

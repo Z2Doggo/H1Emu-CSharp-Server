@@ -17,6 +17,6 @@
 
     public class Json
     {
-        public dynamic? Value { get;}
+        public dynamic? Value { get; }
     }
 }

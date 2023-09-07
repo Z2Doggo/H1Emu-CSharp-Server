@@ -3,9 +3,8 @@
     using System.Buffers;
     using System.ComponentModel;
     using System.Text;
-    using System.Xml.Linq;
 
-    public static class DataSchema
+    public class DataSchema
     {
         interface IH1Z1Buffer : IMemoryOwner<byte>
         {
@@ -26,9 +25,9 @@
             var data = dataToParse;
             var startOffset = offset;
             var result = new Dictionary<string, object>();
-            fields = fields ?? new List<object>();
-            object element = null;
-            byte[] bytes = new byte[0];
+            fields ??= new List<object>();
+            object? element = null;
+            byte[] bytes = Array.Empty<byte>();
             dynamic elements = new List<object>();
             dynamic elementSchema = new List<object>();
 

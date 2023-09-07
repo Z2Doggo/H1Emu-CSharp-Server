@@ -35,7 +35,7 @@
 
     public enum GatewayTypes
     {
-        ILoginRequest, 
+        ILoginRequest,
         ILoginReply,
         ILogout,
         IForceDisconnect,

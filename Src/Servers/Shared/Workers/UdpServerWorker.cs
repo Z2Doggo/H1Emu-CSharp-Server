@@ -4,9 +4,9 @@
     using System.Threading;
     public class UdpServerWorker
     {
-        private Thread _Thread;
-        private int _ServerPort;
-        private bool _DisableAntiDdos;
+        private readonly Thread _Thread;
+        private readonly int _ServerPort;
+        private readonly bool _DisableAntiDdos;
 
         public UdpServerWorker(int serverPort, bool disableAntiDdos)
         {
