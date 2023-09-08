@@ -14,7 +14,7 @@ namespace Protocols.H1Emu
         public class Packet
         {
             public string? name;
-            public byte id;
+            public dynamic? id;
             public List<Field> fields;
         }
 
