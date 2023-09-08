@@ -163,7 +163,7 @@ namespace H1EmuCore
             return Encoding.UTF8.GetBytes(packet);
         }
 
-        public byte[] PackSessionRequestFromjs(object js_object)
+        public byte[] PackSessionRequestFromjs(string js_object)
         {
             return Encoding.UTF8.GetBytes(js_object.ToString());
         }
@@ -178,7 +178,7 @@ namespace H1EmuCore
             return Encoding.UTF8.GetBytes(packet);
         }
 
-        public byte[] PackSessionReplyFromjs(object js_object)
+        public byte[] PackSessionReplyFromjs(string js_object)
         {
             return Encoding.UTF8.GetBytes(js_object.ToString());
         }
@@ -193,7 +193,7 @@ namespace H1EmuCore
             return Encoding.UTF8.GetBytes(packet);
         }
 
-        public byte[] PackNetStatusRequestFromjs(object js_object)
+        public byte[] PackNetStatusRequestFromjs(string js_object)
         {
             return Encoding.UTF8.GetBytes(js_object.ToString());
         }
@@ -203,7 +203,7 @@ namespace H1EmuCore
             return Encoding.UTF8.GetBytes(packet);
         }
 
-        public byte[] PackNetStatusReplyFromjs(object js_object)
+        public byte[] PackNetStatusReplyFromjs(string js_object)
         {
             return Encoding.UTF8.GetBytes(js_object.ToString());
         }
@@ -213,7 +213,7 @@ namespace H1EmuCore
             return Encoding.UTF8.GetBytes(packet);
         }
 
-        public byte[] PackMultiFromjs(object js_object)
+        public byte[] PackMultiFromjs(string js_object)
         {
             return Encoding.UTF8.GetBytes(js_object.ToString());
         }
@@ -223,7 +223,7 @@ namespace H1EmuCore
             return Encoding.UTF8.GetBytes(packet);
         }
 
-        public byte[] PackGroupFromjs(object js_object)
+        public byte[] PackGroupFromjs(string js_object)
         {
             return Encoding.UTF8.GetBytes(js_object.ToString());
         }
@@ -324,6 +324,11 @@ namespace H1EmuCore
         public void EnableCrc()
         {
             useCrc = true;
+        }
+
+        internal byte[] PackMultiFromjs(Dictionary<string, object>? dictionary)
+        {
+            throw new NotImplementedException();
         }
     }
 }
