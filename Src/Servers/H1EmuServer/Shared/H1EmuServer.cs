@@ -12,13 +12,13 @@
         private int? _serverPort;
         private H1EmuProtocol _protocol;
         private int _udpLength = 512;
-        private Dictionary<string, H1emuClient> _clients = new Dictionary<string, H1emuClient>();
+        private readonly Dictionary<string, H1emuClient> _clients = new();
         private Thread _connection;
         private int _pingTime = 5000;
         private int _pingTimeout = 12000;
         private Timer _pingTimer;
 
-        protected H1emuServer(int? serverPort = null)
+        protected H1emuServer(int serverPort)
         {
             _serverPort = serverPort;
             _protocol = new H1EmuProtocol();

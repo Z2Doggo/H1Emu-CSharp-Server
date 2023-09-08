@@ -99,7 +99,7 @@
         private int _cpfTotalSize = -1;
         private int _cpfDataSize = -1;
         private byte[] _cpfDataWithoutHeader = null;
-        private List<int> _cpfProcessedFragmentsSequences = new List<int>();
+        private List<int> _cpfProcessedFragmentsSequences = new();
 
         public SOEInputStream(byte[] cryptoKey)
         {
@@ -190,7 +190,7 @@
         {
             int nextFragmentSequence = (int)((_LastProcessedSequence + 1) & Constants.MAX_SEQUENCE);
             Fragment dataToProcess = (Fragment)_fragments[nextFragmentSequence];
-            List<byte[]> appData = new List<byte[]>();
+            List<byte[]> appData = new();
             if (dataToProcess != null)
             {
                 if (dataToProcess.IsFragment)

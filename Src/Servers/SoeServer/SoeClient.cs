@@ -41,14 +41,14 @@
             new PacketsQueue { Packets = new List<LogicalPacket>(), CurrentByteLength = 0 };
         public List<LogicalPacket> OutQueue { get; set; } = new List<LogicalPacket>();
         public string ProtocolName { get; set; } = "unset";
-        public Dictionary<int, int> UnAckData = new Dictionary<int, int>();
-        public List<SoePacket> OutOfOrderPackets = new List<SoePacket>();
+        public Dictionary<int, int> UnAckData = new();
+        public List<SoePacket> OutOfOrderPackets = new();
         public WrappedUint16 NextAck { get; set; } = new WrappedUint16(1);
         public WrappedUint16 LastAck { get; set; } = new WrappedUint16(1);
         public SOEInputStream InputStream { get; }
         public SOEOutputStream OutputStream { get; set; }
         public string SoeClientId { get; }
-        public Timer LastPingTimer { get; set; }
+        public Timer? LastPingTimer { get; set; }
         public bool IsDeleted { get; set; } = false;
         public ISOEClientStats Stats { get; set; } =
             new SOEClientStats { TotalPacketSent = 0, PacketsOutOfOrder = 0, PacketResend = 0 };

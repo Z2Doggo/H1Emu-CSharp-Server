@@ -23,26 +23,24 @@
     {
         public class MessageEventArgs : EventArgs
         {
-            public IPEndPoint Remote { get; set; }
-            public byte[] Data { get; set; }
+            public IPEndPoint? Remote { get; set; }
+            public byte[]? Data { get; set; }
         }
 
         class Connection
         {
-            public static void PostMessage(object message)
+            public static void PostMessage(string message)
             {
                 // Convert the message object to a byte array
                 byte[] messageBytes = Encoding.UTF8.GetBytes(message.ToString());
 
                 // Create a UdpClient and send the message to the localhost on port 12345
-                using (UdpClient client = new UdpClient())
-                {
-                    client.Send(messageBytes, messageBytes.Length, "127.0.0.1", 1115);
-                }
+                using UdpClient client = new();
+                client.Send(messageBytes, messageBytes.Length, "127.0.0.1", 1115);
             }
         }
 
-        public async Task Start()
+        public void Start()
         {
             // code to start the connection goes here
             Console.WriteLine("Connection started");
@@ -54,10 +52,7 @@
         private SoeProtocol _protocol;
         private int _udpLength = 512;
         private readonly bool _useEncryption = true;
-        private readonly Dictionary<string, SOEClient> _clients = new Dictionary<
-            string,
-            SOEClient
-        >();
+        private readonly Dictionary<string, SOEClient> _clients = new();
         private SynchronizationContext _syncContext;
         private Task _Connection;
 
@@ -107,7 +102,7 @@
                     worker.Start();
                 }
             );
-            Timer timer = new Timer(
+            Timer timer = new(
                 (state) =>
                 {
                     ResetPacketsSent();
@@ -586,69 +581,52 @@
                     }
                 }
             );
-            Connection.PostMessage(new Dictionary<string, object> { { "type", "bind" } });
+            Connection.PostMessage("bind");
         }
 
         public void Stop()
         {
-            Connection.PostMessage(new { type = "close" });
+            Connection.PostMessage("close");
             Environment.Exit(0);
         }
 
         private byte[] PackLogicalData(string packetName, JObject packet)
         {
-            byte[] logicalData;
-            switch (packetName)
+            byte[] logicalData = packetName switch
             {
-                case "SessionRequest":
-                    logicalData = _protocol.PackSessionRequestPacket(
-                        packet["session_id"].Value<int>(),
-                        packet["crc_length"].Value<int>(),
-                        packet["udp_length"].Value<int>(),
-                        packet["protocol"].Value<string>()
-                    );
-                    break;
-                case "SessionReply":
-                    logicalData = _protocol.PackSessionReplyPacket(
-                        packet["session_id"].Value<int>(),
-                        packet["crc_seed"].Value<int>(),
-                        packet["crc_length"].Value<int>(),
-                        packet["encrypt_method"].Value<int>(),
-                        packet["udp_length"].Value<int>()
-                    );
-                    break;
-                case "MultiPacket":
-                    logicalData = _protocol.PackMultiFromjs(
-                        packet.ToObject<Dictionary<string, object>>()
-                    );
-                    break;
-                case "Ack":
-                    logicalData = _protocol.PackAckPacket(packet["sequence"].Value<int>());
-                    break;
-                case "OutOfOrder":
-                    logicalData = _protocol.PackOutOfOrderPacket(packet["sequence"].Value<int>());
-                    break;
-                case "Data":
-                    logicalData = _protocol.PackDataPacket(
-                        packet["data"].ToObject<byte[]>(),
-                        packet["sequence"].Value<int>()
-                    );
-                    break;
-                case "DataFragment":
-                    logicalData = _protocol.PackFragmentDataPacket(
-                        packet["data"].ToObject<byte[]>(),
-                        packet["sequence"].Value<int>()
-                    );
-                    break;
-                default:
-                    logicalData = _protocol.Pack(packetName, JsonConvert.SerializeObject(packet));
-                    break;
-            }
+                "SessionRequest" => _protocol.PackSessionRequestPacket(
+                    packet["session_id"]?.Value<int>() ?? 0,
+                    packet["crc_length"]?.Value<int>() ?? 0,
+                    packet["udp_length"]?.Value<int>() ?? 0,
+                    packet["protocol"]?.Value<string>() ?? ""
+                ),
+                "SessionReply" => _protocol.PackSessionReplyPacket(
+                                        packet["session_id"]?.Value<int>() ?? 0,
+                                        packet["crc_seed"]?.Value<int>() ?? 0,
+                                        packet["crc_length"]?.Value<int>() ?? 0,
+                                        packet["encrypt_method"]?.Value<int>() ?? 0,
+                                        packet["udp_length"]?.Value<int>() ?? 0
+                                    ),
+                "MultiPacket" => _protocol.PackMultiFromjs(
+                                        packet.ToObject<Dictionary<string, object>>()
+                                    ),
+                "Ack" => _protocol.PackAckPacket(packet["sequence"]?.Value<int>() ?? 0),
+                "OutOfOrder" => _protocol.PackOutOfOrderPacket(packet["sequence"]?.Value<int>() ?? 0),
+                "Data" => _protocol.PackDataPacket(
+                    packet["data"]?.ToObject<byte[]>() ?? Array.Empty<byte>(),
+                    packet["sequence"]?.Value<int>() ?? 0
+                ),
+                "DataFragment" => _protocol.PackFragmentDataPacket(
+                                        packet["data"]?.ToObject<byte[]>() ?? Array.Empty<byte>(),
+                                        packet["sequence"]?.Value<int>() ?? 0
+                                    ),
+                _ => _protocol.Pack(packetName, JsonConvert.SerializeObject(packet)),
+            };
             return logicalData;
         }
 
         // Build the logical packet via the soeprotocol
-        private LogicalPacket CreateLogicalPacket(string packetName, JObject packet)
+        private LogicalPacket? CreateLogicalPacket(string packetName, JObject packet)
         {
             try
             {
@@ -690,15 +668,12 @@
         )
         {
             AddPacketToQueue(logicalPacket, queue);
-            if (queue.Timer == null)
-            {
-                queue.Timer = new Timer(
+            queue.Timer ??= new Timer(
                     state => SendClientWaitQueue(client, queue),
                     null,
                     _waitQueueTimeMs,
                     Timeout.Infinite
                 );
-            }
         }
 
         // The packets is builded from schema and added to one of the queues

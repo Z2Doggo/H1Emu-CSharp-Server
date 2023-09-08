@@ -35,27 +35,27 @@
                 get;
                 set;
             }
-            public string Name
+            public string? Name
             {
                 get;
                 set;
             }
-            public object[] Schema
+            public object[]? Schema
             {
                 get;
                 set;
             }
-            public Func<object, object> Fn
+            public Func<object, object>? Fn
             {
                 get;
                 set;
             }
-            public Func<object, object> Parse
+            public Func<object, object>? Parse
             {
                 get;
                 set;
             }
-            public Func<object, object> Pack
+            public Func<object, object>? Pack
             {
                 get;
                 set;
